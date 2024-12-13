@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi - Dashboard Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --sidebar-bg: #1a237e;
+            --sidebar-hover: #283593;
+            --sidebar-active: #3949ab;
+        }
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        #sidebar {
+            background: var(--sidebar-bg);
+            min-height: 100vh;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        #sidebar .sidebar-header h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0;
+            padding: 10px 0;
+        }
+        #sidebar .nav-item {
+            margin: 5px 15px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            transition: all 0.3s;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+        #sidebar .nav-link:hover {
+            background: var(--sidebar-hover);
+            color: white;
+            transform: translateX(5px);
+        }
+        #sidebar .nav-link.active {
+            background: var(--sidebar-active);
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border-left: 4px solid white; /* Tambahkan garis putih di sisi kiri */
+            padding-left: 16px; /* Sesuaikan padding agar teks tidak terlalu dekat dengan garis */
+        }
+        #sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+        .card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            color: #495057;
+            font-weight: 600;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .status-hadir {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-terlambat {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-izin {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        .filter-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .btn-action {
+            padding: 5px 10px;
+            font-size: 0.875rem;
+        }
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: -250px;
+                position: fixed;
+                min-width: 250px;
+                z-index: 999;
+            }
+            #sidebar.active {
+                margin-left: 0;
+            }
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse active">
+                <div class="sidebar-header">
+                    <h3>Kasir Oke<?php echo isset($_SESSION['role']) ? htmlspecialchars($_SESSION['role']) . ' Panel' : 'User Panel'; ?></h3>
+                </div>
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">
+                                <i class="bi bi-house-door-fill"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="dashboard-admin.html">
+                                <i class="bi bi-shield-shaded"></i> Dashboard Admin
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="absensi.html">
+                                <i class="bi bi-calendar-check-fill"></i> Absensi
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="tambah-anggota.html">
+                                <i class="bi bi-person-plus-fill"></i> Tambah Anggota
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="kasir.html">
+                                <i class="bi bi-cash-stack"></i> Kasir
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="gudang.html">
+                                <i class="bi bi-building"></i> Gudang
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="laporan-keuangan.html">
+                                <i class="bi bi-graph-up"></i> Laporan Keuangan
+                            </a>
+                        </li>
+                        <li class="nav-item mt-4">
+                            <a class="nav-link" href="logout.html">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+             <!-- Main Content -->
+             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="main-header d-flex justify-content-between align-items-center pt-3 pb-2 mb-3">
+                    <h1 class="h2">Absensi Karyawan</h1>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahAbsensiModal"> 
+                        <i class="bi bi-plus-lg"></i> Tambah Absensi
+                    </button>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="filter-section mb-4">
+                    <form method="GET" action="" class="mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Tanggal</label>
+                                <input type="date" class="form-control" name="filter_tanggal">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Nama Karyawan</label>
+                                <input type="text" class="form-control" name="filter_nama" placeholder="Masukkan nama karyawan">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-control" name="filter_status">
+                                    <option value="">Semua Status</option>
+                                    <option value="Hadir">Hadir</option>
+                                    <option value="Terlambat">Terlambat</option>
+                                    <option value="Izin">Izin</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary me-2">
+                                    <i class="bi bi-search"></i> Cari
+                                </button>
+                                <a href="absensi.php" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-clockwise"></i> Reset
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+
+                 <!-- Tabel Data Absensi -->
+                 <div class="card">
+                    <div class="card-body">
+                        <div class="text-center py-4">
+                            <i class="bi bi-inbox fs-1 text-muted"></i>
+                            <p class="mt-2">Tidak ada data yang ditemukan</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Absensi -->
+    <div class="modal fade" id="tambahAbsensiModal" tabindex="-1" aria-labelledby="tambahAbsensiModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tambahAbsensiModalLabel">Tambah Absensi Karyawan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="absensi.php">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nama_karyawan" class="form-label">Nama Karyawan</label>
+                            <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tanggal" class="form-label">Tanggal</label>
+                            <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jam_masuk" class="form-label">Jam Masuk</label>
+                            <input type="time" class="form-control" id="jam_masuk" name="jam_masuk" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jam_keluar" class="form-label">Jam Keluar</label>
+                            <input type="time" class="form-control" id="jam_keluar" name="jam_keluar">
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-control" id="status" name="status" required>
+                                <option value="Hadir">Hadir</option>
+                                <option value="Terlambat">Terlambat</option>
+                                <option value="Izin">Izin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="keterangan" class="form-label">Keterangan</label>
+                            <textarea class="form-control" id="keterangan" name="keterangan" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Fungsi untuk menampilkan SweetAlert
+        // omit: Insert PHP logic for SweetAlert handling here
+
+        // Fungsi untuk konfirmasi hapus data
+        function deleteAbsensi(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `delete_absensi.php?id=${id}`;
+                }
+            });
+        }
+
+        // Fungsi untuk edit data
+        function editAbsensi(id) {
+            fetch(`get_absensi.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        title: 'Edit Absensi',
+                        html: `
+                            <form id="editForm">
+                                <input type="hidden" id="edit_id" value="${data.id}">
+                                <div class="mb-3">
+                                    <label for="edit_nama_karyawan" class="form-label">Nama Karyawan</label>
+                                    <input type="text" class="form-control" id="edit_nama_karyawan" value="${data.nama_karyawan}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_tanggal" class="form-label">Tanggal</label>
+                                    <input type="date" class="form-control" id="edit_tanggal" value="${data.tanggal}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_jam_masuk" class="form-label">Jam Masuk</label>
+                                    <input type="time" class="form-control" id="edit_jam_masuk" value="${data.jam_masuk}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_jam_keluar" class="form-label">Jam Keluar</label>
+                                    <input type="time" class="form-control" id="edit_jam_keluar" value="${data.jam_keluar}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_status" class="form-label">Status</label>
+                                    <select class="form-control" id="edit_status">
+                                        <option value="Hadir" ${data.status === 'Hadir' ? 'selected' : ''}>Hadir</option>
+                                        <option value="Terlambat" ${data.status === 'Terlambat' ? 'selected' : ''}>Terlambat</option>
+                                        <option value="Izin" ${data.status === 'Izin' ? 'selected' : ''}>Izin</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_keterangan" class="form-label">Keterangan</label>
+                                    <textarea class="form-control" id="edit_keterangan">${data.keterangan}</textarea>
+                                </div>
+                            </form>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'Simpan',
+                        cancelButtonText: 'Batal',
+                        preConfirm: () => {
+                            const formData = {
+                                id: document.getElementById('edit_id').value,
+                                nama_karyawan: document.getElementById('edit_nama_karyawan').value,
+                                tanggal: document.getElementById('edit_tanggal').value,
+                                jam_masuk: document.getElementById('edit_jam_masuk').value,
+                                jam_keluar: document.getElementById('edit_jam_keluar').value,
+                                status: document.getElementById('edit_status').value,
+                                keterangan: document.getElementById('edit_keterangan').value
+                            };
+                            return fetch('update_absensi.php', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(formData)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: 'Data absensi berhasil diperbarui',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(() => {
+                                        window.location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: 'Gagal memperbarui data absensi'
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+        }
+    </script>
+</body>
+</html>

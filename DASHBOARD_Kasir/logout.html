@@ -1,0 +1,15 @@
+<?php
+session_start(); // Mulai session
+
+// Hapus semua session
+session_unset();
+
+// Hancurkan session
+session_destroy();
+
+// Redirect ke halaman login dengan pesan logout
+echo "<script>
+    alert('Anda telah berhasil logout!');
+    window.location.href='login.php'; // Ganti dengan halaman login kamu
+</script>";
+?>

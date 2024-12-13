@@ -1,0 +1,229 @@
+<?php
+session_start();
+// Add authentication check
+if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'Admin') {
+    header("Location: login.php");
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse active">
+                <div class="sidebar-header">
+                    <h3>Kasir Oke<?php echo isset($_SESSION['role']) ? htmlspecialchars($_SESSION['role']) . ' Panel' : 'User Panel'; ?></h3>
+                </div>
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link " href="index.html">
+                                <i class="bi bi-house-door-fill"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="dashboard-admin.html">
+                                <i class="bi bi-shield-shaded"></i> Dashboard Admin
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="absensi.html">
+                                <i class="bi bi-calendar-check-fill"></i> Absensi
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="tambah-anggota.html">
+                                <i class="bi bi-person-plus-fill"></i> Tambah Anggota
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="kasir.html">
+                                <i class="bi bi-cash-stack"></i> Kasir
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="gudang.html">
+                                <i class="bi bi-building"></i> Gudang
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="laporan-keuangan.html">
+                                <i class="bi bi-graph-up"></i> Laporan Keuangan
+                            </a>
+                        </li>
+                        <li class="nav-item mt-4">
+                            <a class="nav-link" href="logout.html">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="main-header d-flex justify-content-between align-items-center">
+                    <h1 class="main-title">Dashboard Admin</h1>
+                    <button class="btn sidebar-toggle d-md-none">
+                        <i class="bi bi-list"></i>
+                    </button>
+                </div>
+
+                <!-- Quick Stats Cards -->
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="card dashboard-card bg-primary text-white">
+                            <div class="card-body">
+                                <i class="bi bi-people-fill mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="card-title">Total Karyawan</h5>
+                                <p class="display-6">52</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card dashboard-card bg-success text-white">
+                            <div class="card-body">
+                                <i class="bi bi-check-circle-fill mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="card-title">Karyawan Aktif</h5>
+                                <p class="display-6">45</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card dashboard-card bg-warning text-white">
+                            <div class="card-body">
+                                <i class="bi bi-clock-fill mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="card-title">Cuti/Izin</h5>
+                                <p class="display-6">7</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card dashboard-card bg-info text-white">
+                            <div class="card-body">
+                                <i class="bi bi-cash-coin mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="card-title">Total Omzet</h5>
+                                <p class="display-6">Rp 120M</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="row mt-4">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Aktivitas Terakhir</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>Rudi Hartono</strong> menambahkan karyawan baru
+                                            <span class="badge bg-success ms-2">Baru</span>
+                                        </div>
+                                        <small class="text-muted">5 menit yang lalu</small>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>Kasir</strong> melakukan transaksi penjualan
+                                        </div>
+                                        <small class="text-muted">1 jam yang lalu</small>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>Gudang</strong> update stok barang
+                                        </div>
+                                        <small class="text-muted">3 jam yang lalu</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Ringkasan Cepat</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="quick-summary">
+                                    <div class="summary-item">
+                                        <i class="bi bi-clipboard-data text-primary"></i>
+                                        <div class="summary-content">
+                                            <span class="summary-title">Penjualan Hari Ini</span>
+                                            <span class="summary-value">Rp 12.500.000</span>
+                                        </div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <i class="bi bi-truck text-success"></i>
+                                        <div class="summary-content">
+                                            <span class="summary-title">Barang Keluar</span>
+                                            <span class="summary-value">45 Unit</span>
+                                        </div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <i class="bi bi-box-seam text-warning"></i>
+                                        <div class="summary-content">
+                                            <span class="summary-title">Stok Minimum</span>
+                                            <span class="summary-value">3 Produk</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification and Alerts -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-danger text-white">
+                                <h5 class="card-title mb-0">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>Peringatan Sistem
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                                    <i class="bi bi-exclamation-circle me-3" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        Stok produk <strong>Kemeja Putih</strong> hampir habis. 
+                                        Segera lakukan pengadaan ulang sebelum stok habis.
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                    <i class="bi bi-x-circle me-3" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        3 karyawan belum melakukan absensi hari ini. 
+                                        Mohon segera ditindaklanjuti.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle sidebar on mobile
+        document.querySelector('.sidebar-toggle')?.addEventListener('click', () => {
+            document.querySelector('#sidebar').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
